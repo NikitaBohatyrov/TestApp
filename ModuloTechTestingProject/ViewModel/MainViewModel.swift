@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import UIKit
 
 final class MainViewModel{
     
@@ -19,7 +18,7 @@ final class MainViewModel{
                  return
              }
                  do{
-                 let result = try JSONDecoder().decode(Welcome.self, from: data!)
+                 let result = try JSONDecoder().decode(Root.self, from: data!)
                      completion(result.devices,result.user)
                  }catch {
                      print("error")
@@ -35,7 +34,7 @@ final class MainViewModel{
             for device in devices {
                 if let position = device.position{
                     let rollerShutter = RollerShutter(id: device.id, name: device.deviceName, position: position)
-                   
+                    
                     rollerShutters.append(rollerShutter)
     
                 }else if let temperature = device.temperature,
@@ -53,7 +52,7 @@ final class MainViewModel{
             }
             let sections:[Section] = [
                 Section(title: "Lights", content: lights, isOpened: true),
-                Section(title: "Roller shutters", content: rollerShutters, isOpened: true),
+                Section(title: "Roller shutters", content: rollerShutters, isOpened: false),
                 Section(title: "Heaters", content: heaters, isOpened: false)
             ]
             

@@ -13,9 +13,7 @@
 		2F455A43289C6E1F00467A7C /* ViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F455A42289C6E1F00467A7C /* ViewData.swift */; };
 		2F455A45289C6F5C00467A7C /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F455A44289C6F5C00467A7C /* MainViewModel.swift */; };
 		2F455A50289C924200467A7C /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F455A4F289C924200467A7C /* Launch Screen.storyboard */; };
-		2F455A5428A1C05200467A7C /* LightDeviceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F455A5328A1C05200467A7C /* LightDeviceTableViewCell.swift */; };
-		2F455A5628A1C07200467A7C /* HeaterDeviceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F455A5528A1C07200467A7C /* HeaterDeviceTableViewCell.swift */; };
-		2F455A5828A1C08100467A7C /* RollerShutterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F455A5728A1C08100467A7C /* RollerShutterTableViewCell.swift */; };
+		2F455A5428A1C05200467A7C /* DevicesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F455A5328A1C05200467A7C /* DevicesTableViewCell.swift */; };
 		2F455A5D28A1CA8F00467A7C /* SectionTitileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F455A5C28A1CA8F00467A7C /* SectionTitileTableViewCell.swift */; };
 		2F455A5F28A1E62600467A7C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2F455A5E28A1E62600467A7C /* Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -29,9 +27,7 @@
 		2F455A42289C6E1F00467A7C /* ViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewData.swift; sourceTree = "<group>"; };
 		2F455A44289C6F5C00467A7C /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		2F455A4F289C924200467A7C /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		2F455A5328A1C05200467A7C /* LightDeviceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightDeviceTableViewCell.swift; sourceTree = "<group>"; };
-		2F455A5528A1C07200467A7C /* HeaterDeviceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaterDeviceTableViewCell.swift; sourceTree = "<group>"; };
-		2F455A5728A1C08100467A7C /* RollerShutterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollerShutterTableViewCell.swift; sourceTree = "<group>"; };
+		2F455A5328A1C05200467A7C /* DevicesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesTableViewCell.swift; sourceTree = "<group>"; };
 		2F455A5C28A1CA8F00467A7C /* SectionTitileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionTitileTableViewCell.swift; sourceTree = "<group>"; };
 		2F455A5E28A1E62600467A7C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -122,9 +118,7 @@
 		2F455A5928A1C09800467A7C /* TableViewCells */ = {
 			isa = PBXGroup;
 			children = (
-				2F455A5328A1C05200467A7C /* LightDeviceTableViewCell.swift */,
-				2F455A5528A1C07200467A7C /* HeaterDeviceTableViewCell.swift */,
-				2F455A5728A1C08100467A7C /* RollerShutterTableViewCell.swift */,
+				2F455A5328A1C05200467A7C /* DevicesTableViewCell.swift */,
 				2F455A5C28A1CA8F00467A7C /* SectionTitileTableViewCell.swift */,
 			);
 			path = TableViewCells;
@@ -200,13 +194,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2F455A5428A1C05200467A7C /* LightDeviceTableViewCell.swift in Sources */,
+				2F455A5428A1C05200467A7C /* DevicesTableViewCell.swift in Sources */,
 				2F455A45289C6F5C00467A7C /* MainViewModel.swift in Sources */,
-				2F455A5828A1C08100467A7C /* RollerShutterTableViewCell.swift in Sources */,
 				2F455A30289C6AE200467A7C /* MainViewController.swift in Sources */,
 				2F455A2C289C6AE200467A7C /* AppDelegate.swift in Sources */,
 				2F455A43289C6E1F00467A7C /* ViewData.swift in Sources */,
-				2F455A5628A1C07200467A7C /* HeaterDeviceTableViewCell.swift in Sources */,
 				2F455A2E289C6AE200467A7C /* SceneDelegate.swift in Sources */,
 				2F455A5D28A1CA8F00467A7C /* SectionTitileTableViewCell.swift in Sources */,
 			);

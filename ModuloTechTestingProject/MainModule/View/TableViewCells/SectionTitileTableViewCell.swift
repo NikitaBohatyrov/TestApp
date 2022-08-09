@@ -31,6 +31,7 @@ class SectionTitileTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
         contentView.addSubview(title)
         contentView.addSubview(icon)
+        
         NSLayoutConstraint.activate([
         title.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 40),
         title.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),

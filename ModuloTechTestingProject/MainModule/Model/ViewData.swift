@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct Welcome: Codable {
+struct Root: Codable {
     let devices: [Device]
     let user: User
 }
