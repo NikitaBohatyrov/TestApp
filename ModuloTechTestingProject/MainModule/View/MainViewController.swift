@@ -7,10 +7,13 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, Coordinating {
     
+    var coordinator: Coordinator?
     let viewModel = MainViewModel()
+    
     var tableView = UITableView(frame: .zero, style: .insetGrouped)
+
     var sections = [Section]()
     
     override func viewDidLoad() {
@@ -34,6 +37,8 @@ class MainViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         view.addSubview(tableView)
+        navigationController?.isNavigationBarHidden = true 
+        tableView.backgroundColor = UIColor(named: "Brown")
     }
 }
 
@@ -55,15 +60,16 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource{
         if  indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: SectionTitileTableViewCell.identifier,
                                                      for: indexPath) as! SectionTitileTableViewCell
-            cell.backgroundColor = UIColor(named: "Brown")
+            cell.backgroundColor = UIColor(named: "Black")
             cell.title.font = .systemFont(ofSize: tableView.frame.size.height/36)
             cell.configure(with: sections[indexPath.section].title)
             return cell
         }else {
             let model = sections[indexPath.section].content[indexPath.row-1]
+
             let cell = tableView.dequeueReusableCell(withIdentifier: DevicesTableViewCell.identifier,
                                                      for: indexPath) as! DevicesTableViewCell
-            
+            cell.backgroundColor = UIColor(named: "DarkGray")
             cell.configure(with:model)
             return cell
         }
@@ -74,6 +80,8 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource{
         if indexPath.row == 0 {
             sections[indexPath.section].isOpened = !sections[indexPath.section].isOpened
             tableView.reloadSections([indexPath.section], with: .none)
+        }else {
+            coordinator?.eventOccured(with: .cellTapped, data: sections[indexPath.section].content[indexPath.row-1])
         }
     }
     

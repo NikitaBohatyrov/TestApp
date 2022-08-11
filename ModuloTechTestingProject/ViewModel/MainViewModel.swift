@@ -9,6 +9,7 @@ import Foundation
 
 final class MainViewModel{
     
+    
     func parse(completion:@escaping ([Device],User)->()) {
         let url = URL(string: "http://storage42.com/modulotest/data.json")
          

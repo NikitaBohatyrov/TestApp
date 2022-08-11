@@ -14,7 +14,7 @@ class SectionTitileTableViewCell: UITableViewCell {
     var title:UILabel = {
         let title = UILabel()
         title.text = "Section title"
-        title.textColor = UIColor(named: "Black")
+        title.textColor = UIColor(named: "LightGray")
         title.translatesAutoresizingMaskIntoConstraints = false
         
         return title
