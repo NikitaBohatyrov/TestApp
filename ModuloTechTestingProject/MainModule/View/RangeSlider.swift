@@ -52,7 +52,7 @@ class Slider: UISlider {
     
     private func createBaseLayer(){
         baseLayer.borderWidth = 2
-        baseLayer.borderColor = UIColor(named: "Brown")?.cgColor
+        baseLayer.borderColor = UIColor(named: "DarkGray")?.cgColor
         baseLayer.masksToBounds = true
         baseLayer.backgroundColor = UIColor.clear.cgColor
         baseLayer.frame = .init(x: 0, y: frame.height/4, width: frame.width, height: frame.height/2)
@@ -70,7 +70,6 @@ class Slider: UISlider {
         setThumbImage(thumbSnapshot, for: .normal)
         setThumbImage(thumbSnapshot, for: .highlighted)
         setThumbImage(thumbSnapshot, for: .application)
-        setThumbImage(thumbSnapshot, for: .disabled)
         setThumbImage(thumbSnapshot, for: .focused)
         setThumbImage(thumbSnapshot, for: .reserved)
         setThumbImage(thumbSnapshot, for: .selected)
@@ -100,7 +99,7 @@ final class Thumb:UIView {
     }
     
     private func setup() {
-        backgroundColor = UIColor.systemYellow
+            backgroundColor = UIColor.systemYellow
     }
 }
 

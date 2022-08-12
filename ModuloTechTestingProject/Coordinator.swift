@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 enum Event {
-    case cellTapped
+    case cellTapped, popedVC
 }
 
 protocol Coordinator{

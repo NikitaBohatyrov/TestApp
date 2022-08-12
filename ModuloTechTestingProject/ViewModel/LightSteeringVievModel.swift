@@ -8,7 +8,16 @@
 import Foundation
 
 final class LightSteeringViewModel{
-    func sendSliderValue(value:Float){
-        var valueToSend = Int(value*100)
+
+    public func saveAndSendData(data:Light,completion:@escaping (Light)->()){
+        let mode:String!
+        if data.mode{
+             mode = "On"
+        }else {
+            mode = "Off"
+        }
+        let newLightClassObject = Light(id: data.id, name: data.name, intensity: data.intensity, mode: mode)
+        
+        completion(newLightClassObject)
     }
 }

@@ -18,7 +18,11 @@ class MainCoordinator:Coordinator{
             var vc:UIViewController & Coordinating = LightSteeringViewController(with: data)
             vc.coordinator = self
             navigationController?.isNavigationBarHidden = false
-            navigationController?.pushViewController(vc, animated: true)
+            navigationController?.show(vc, sender: self)
+        case .popedVC:
+            var vc:UIViewController & Coordinating = MainViewController()
+            vc.coordinator = self
+            navigationController?.isNavigationBarHidden = true
         }
     }
     
