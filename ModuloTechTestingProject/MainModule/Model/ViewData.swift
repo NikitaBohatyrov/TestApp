@@ -44,10 +44,10 @@ struct Address: Codable {
     let street, streetCode, country: String
 }
 
-class Light{
+class Light:Codable{
     var id: Int
     var name: String
-    var intensity: Int
+    var intensity: Int 
     var mode: Bool!
     
     init(id:Int,name:String,intensity:Int,mode:String){
@@ -63,7 +63,7 @@ class Light{
     }
 }
 
-class Heater{
+class Heater:Codable{
     var id: Int
     var name: String
     var temperature: Double
@@ -82,7 +82,7 @@ class Heater{
     }
 }
 
-class RollerShutter{
+class RollerShutter:Codable{
     var id: Int
     var name: String
     var position: Int
@@ -98,5 +98,6 @@ struct Section{
     let title:String
     var content:[Any]
     var isOpened:Bool
+    
 }
 

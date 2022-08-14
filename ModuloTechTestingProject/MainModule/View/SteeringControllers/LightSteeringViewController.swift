@@ -8,10 +8,12 @@
 import UIKit
 
 class LightSteeringViewController: UIViewController, Coordinating {
+    
     var coordinator: Coordinator?
     
-    var viewModel:LightSteeringViewModel!
+    var viewModel = SteeringViewModel()
     
+    private var device:Light!
     private var mode:Bool!
     private var intensity:Int!
     
@@ -84,6 +86,7 @@ class LightSteeringViewController: UIViewController, Coordinating {
     init(with model:Any){
         super.init(nibName: nil, bundle: nil)
         if let model = model as? Light{
+            device = model
             DeviceLabel.text = model.name
             mode = model.mode
             intensity = model.intensity
@@ -113,9 +116,8 @@ class LightSteeringViewController: UIViewController, Coordinating {
         super.viewDidLoad()
         
         rangeSlider.translatesAutoresizingMaskIntoConstraints = false
-        
+        navigationController?.isNavigationBarHidden = false
         view.backgroundColor = UIColor(named: "DarkGray")
-        title = DeviceLabel.text
         
         controlPanelView.addSubview(intensityLabel)
         controlPanelView.addSubview(rangeSlider)
@@ -155,23 +157,25 @@ class LightSteeringViewController: UIViewController, Coordinating {
         ])
         rangeSlider.addTarget(self, action: #selector(updateIntanseLabel), for: .valueChanged)
         powerButton.addTarget(self, action: #selector(switchMode), for: .touchUpInside)
+        
        
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        if self.isMovingFromParent{
-            
-        }
-    }
-    
+
     private func setUpNavBar(){
         navigationController?.navigationBar.topItem?.title = ""
         let nav = self.navigationController?.navigationBar
         nav?.barStyle = UIBarStyle.black
         nav?.tintColor = UIColor(named: "LightGray")
         nav?.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "LightGray")!]
+        let backButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapDone))
+        navigationItem.leftBarButtonItem = backButton
+        navigationItem.title = DeviceLabel.text
+    }
+    
+    @objc func didTapDone(){
+        viewModel.saveAndSendData(model: device!, updatedMode: mode, updatedValue:intensity){[weak self] updatedLight in
+            self?.coordinator?.eventOccured(with: .backButtonTapped, data: updatedLight)
+        }
     }
     
     @objc func switchMode(){
@@ -192,6 +196,7 @@ class LightSteeringViewController: UIViewController, Coordinating {
     
     @objc private func updateIntanseLabel(){
         let valueToChange = Int(rangeSlider.value*100)
+        self.intensity = valueToChange
         controlShadow(valueToChange: valueToChange)
         self.intensityLabel.text = "\(valueToChange)"
     }

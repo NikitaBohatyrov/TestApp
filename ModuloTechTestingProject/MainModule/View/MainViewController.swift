@@ -16,17 +16,42 @@ class MainViewController: UIViewController, Coordinating {
 
     var sections = [Section]()
     
+    var updatedValue:Any?
+    
+    init(with data:Any,start:Bool = false){
+        super.init(nibName: nil, bundle: nil)
+        self.updatedValue = data
+    }
+    
+    init(){
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewModel.getDevices {[weak self] sections in
-            self?.sections = sections
+        if let value = updatedValue{
             
-            DispatchQueue.main.async {[weak self] in
-                self?.tableView.reloadData()
+            viewModel.updateSection(updatedData: value) {[weak self] updatedSections in
+                self?.sections = updatedSections
+                
+                DispatchQueue.main.async {[weak self] in
+                    self?.tableView.reloadData()
+                }
+            }
+        }else{
+            viewModel.getDevices {[weak self] sections in
+                self?.sections = sections
+                DispatchQueue.main.async {[weak self] in
+                    self?.tableView.reloadData()
+                }
             }
         }
-
         createView()
     }
 

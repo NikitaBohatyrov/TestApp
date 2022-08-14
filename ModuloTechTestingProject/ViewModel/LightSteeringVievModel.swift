@@ -7,17 +7,18 @@
 
 import Foundation
 
-final class LightSteeringViewModel{
-
-    public func saveAndSendData(data:Light,completion:@escaping (Light)->()){
-        let mode:String!
-        if data.mode{
-             mode = "On"
+final class SteeringViewModel{
+    
+    public func saveAndSendData(model:Any,updatedMode:Bool,updatedValue:Int,completion:@escaping (Light)->()){
+        let mode:String
+        if updatedMode{
+            mode = "ON"
         }else {
-            mode = "Off"
+            mode = "OFF"
         }
-        let newLightClassObject = Light(id: data.id, name: data.name, intensity: data.intensity, mode: mode)
-        
-        completion(newLightClassObject)
+        if let model = model as? Light{
+            let newLightClassObject = Light(id: model.id, name: model.name, intensity: updatedValue, mode: mode)
+            completion(newLightClassObject)
+        }
     }
 }
