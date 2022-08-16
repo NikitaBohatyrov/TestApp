@@ -35,7 +35,7 @@ class Slider: UISlider {
         thumbTintColor = .clear
     }
     
-
+    
     
     @objc func valueChanged(_ sender:Slider){
         CATransaction.begin()
@@ -46,13 +46,13 @@ class Slider: UISlider {
                                    value: value)
         
         trackLayer.frame = .init(x: 0, y: frame.height/4, width: thumbRectA.midX, height: frame.height/2)
-
+        
         CATransaction.commit()
     }
     
     private func createBaseLayer(){
         baseLayer.borderWidth = 2
-        baseLayer.borderColor = UIColor(named: "DarkGray")?.cgColor
+        baseLayer.borderColor = UIColor(red: 36/255, green: 36/255, blue: 68/255, alpha: 1).cgColor
         baseLayer.masksToBounds = true
         baseLayer.backgroundColor = UIColor.clear.cgColor
         baseLayer.frame = .init(x: 0, y: frame.height/4, width: frame.width, height: frame.height/2)
@@ -92,14 +92,14 @@ final class Thumb:UIView {
         super.init(frame: frame)
         setup()
     }
- 
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setup()
     }
     
     private func setup() {
-            backgroundColor = UIColor.systemYellow
+        backgroundColor = UIColor.systemYellow
     }
 }
 

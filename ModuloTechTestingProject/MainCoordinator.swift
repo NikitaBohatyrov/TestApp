@@ -21,11 +21,11 @@ class MainCoordinator:Coordinator{
                 vc.title = data.name
                 vc.coordinator = self
             }else if let data = data as? RollerShutter{
-                vc = RollerShutterSteeringViewController()
+                vc = RollerShutterSteeringViewController(with: data)
                 vc.title = data.name
                 vc.coordinator = self
             } else if let data = data as? Heater{
-                vc = HeaterSteeringViewController()
+                vc = HeaterSteeringViewController(with: data)
                 vc.title = data.name
                 vc.coordinator = self
             }else {
@@ -39,9 +39,17 @@ class MainCoordinator:Coordinator{
             navigationController?.view.window!.layer.add(transition, forKey: kCATransition)
             navigationController?.pushViewController(vc, animated: false)
         case .backButtonTapped:
+            var vc:UIViewController & Coordinating
             if let data = data as? Light{
-                var vc:UIViewController & Coordinating = MainViewController(with: data)
-                vc.coordinator = self
+              vc = MainViewController(with: data)
+            }else if let data = data as? RollerShutter{
+                vc = MainViewController(with: data)
+            }else if let data = data as? Heater{
+                vc = MainViewController(with: data)
+            }else {
+                return
+            }
+            vc.coordinator = self
                 let transition = CATransition()
                 transition.duration = 0.4
                 transition.type = CATransitionType.reveal
@@ -49,7 +57,6 @@ class MainCoordinator:Coordinator{
                 transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeInEaseOut)
                 navigationController?.view.window!.layer.add(transition, forKey: kCATransition)
                 navigationController?.pushViewController(vc, animated: false)
-            }
         }
     }
         

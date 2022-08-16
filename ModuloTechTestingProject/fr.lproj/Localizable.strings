@@ -1,0 +1,10 @@
+"Lights" = "Lampes";
+"Roller shutters" = "Volets roulants";
+"Heaters" = "Radiateurs";
+"Off" = "couper";
+"On" = "allumer";
+"Opened" = "a ouvert";
+"Closed" = "fermé";
+"Turned on with %lld%% of power" = "Allumé avec %lld%% de puissance";
+"Turned on at %.1f%℃" = "Allumé à %.1f%℃";
+"Opened on %lld%%" = "ouvert à %lld%%";

@@ -19,3 +19,20 @@ extension UIView {
         return capturedImage
     }
 }
+
+extension String {
+    func localized()->String{
+        return NSLocalizedString(self,
+                                 tableName: "Localizable",
+                                 bundle: .main,
+                                 value: self,
+                                 comment: self)
+    }
+    
+    func localizedWithParameters(_ parameters:CVarArg...)->String{
+       
+        let localizedString = self.localized()
+        return String(format: localizedString, parameters)
+                      
+    }
+}

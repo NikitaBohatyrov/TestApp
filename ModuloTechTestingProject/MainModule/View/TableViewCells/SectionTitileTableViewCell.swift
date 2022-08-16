@@ -8,7 +8,7 @@
 import UIKit
 
 class SectionTitileTableViewCell: UITableViewCell {
-
+    
     static let identifier = "SectionTitileTableViewCell"
     
     var title:UILabel = {
@@ -26,26 +26,27 @@ class SectionTitileTableViewCell: UITableViewCell {
         return imageView
     }()
     
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         contentView.addSubview(title)
         contentView.addSubview(icon)
+        contentView.backgroundColor = UIColor(red: 19/255, green: 108/255, blue: 164/255, alpha: 1)
         
         NSLayoutConstraint.activate([
-        title.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 40),
-        title.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-        title.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.6),
-        title.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.8),
-        icon.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 7),
-        icon.rightAnchor.constraint(equalTo: contentView.rightAnchor,constant: -10),
-        icon.widthAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.8),
-        icon.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.8),
+            title.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 40),
+            title.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            title.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.6),
+            title.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.8),
+            icon.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 7),
+            icon.rightAnchor.constraint(equalTo: contentView.rightAnchor,constant: -10),
+            icon.widthAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.8),
+            icon.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.8),
         ])
     }
     
     func configure(with section:String){
-        title.text = section
+        title.text = section.localized()
         switch section{
         case "Lights":
             icon.image = UIImage(named: "DeviceLightOnIcon")

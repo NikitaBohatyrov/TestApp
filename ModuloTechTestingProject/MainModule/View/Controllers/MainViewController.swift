@@ -56,6 +56,7 @@ class MainViewController: UIViewController, Coordinating {
     }
 
     private func createView(){
+        self.view.backgroundColor = UIColor(red: 36/255, green: 36/255, blue: 68/255, alpha: 1)
         tableView.frame = view.bounds
         tableView.register(SectionTitileTableViewCell.self, forCellReuseIdentifier: SectionTitileTableViewCell.identifier)
         tableView.register(DevicesTableViewCell.self, forCellReuseIdentifier: DevicesTableViewCell.identifier)
@@ -63,7 +64,7 @@ class MainViewController: UIViewController, Coordinating {
         tableView.delegate = self
         view.addSubview(tableView)
         navigationController?.isNavigationBarHidden = true 
-        tableView.backgroundColor = UIColor(named: "Brown")
+        tableView.backgroundColor = UIColor(red: 36/255, green: 36/255, blue: 68/255, alpha: 1)
     }
 }
 
@@ -85,8 +86,8 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource{
         if  indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: SectionTitileTableViewCell.identifier,
                                                      for: indexPath) as! SectionTitileTableViewCell
-            cell.backgroundColor = UIColor(named: "Black")
             cell.title.font = .systemFont(ofSize: tableView.frame.size.height/36)
+            cell.title.textColor = UIColor(named: "LightGray")
             cell.configure(with: sections[indexPath.section].title)
             return cell
         }else {
@@ -94,7 +95,9 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource{
 
             let cell = tableView.dequeueReusableCell(withIdentifier: DevicesTableViewCell.identifier,
                                                      for: indexPath) as! DevicesTableViewCell
-            cell.backgroundColor = UIColor(named: "DarkGray")
+            cell.backgroundColor = UIColor(red: 70/255, green: 100/255, blue: 140/255, alpha: 1)
+            cell.deviceName.font = .systemFont(ofSize: tableView.frame.size.height/38)
+            cell.stateLabel.font = .systemFont(ofSize: tableView.frame.size.height/42)
             cell.configure(with:model)
             return cell
         }
