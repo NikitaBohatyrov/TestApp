@@ -84,6 +84,7 @@
 		2F455A2A289C6AE200467A7C /* ModuloTechTestingProject */ = {
 			isa = PBXGroup;
 			children = (
+				2FB3426728ABC2A00027FCF7 /* Localized */,
 				2F52313128A3C2EE004F3C69 /* MainCoordinator.swift */,
 				2F52312F28A3C1B1004F3C69 /* Coordinator.swift */,
 				2F455A2B289C6AE200467A7C /* AppDelegate.swift */,
@@ -91,7 +92,6 @@
 				2F455A47289C6F6D00467A7C /* ViewModel */,
 				2F455A40289C6D7100467A7C /* MainModule */,
 				2F455A39289C6AE900467A7C /* Info.plist */,
-				2F8FCEB928AAF32200EC6476 /* Localizable.strings */,
 			);
 			path = ModuloTechTestingProject;
 			sourceTree = "<group>";
@@ -150,6 +150,14 @@
 				2FC345B228A86BF000CEAA13 /* SteeringControllers */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		2FB3426728ABC2A00027FCF7 /* Localized */ = {
+			isa = PBXGroup;
+			children = (
+				2F8FCEB928AAF32200EC6476 /* Localizable.strings */,
+			);
+			path = Localized;
 			sourceTree = "<group>";
 		};
 		2FC345B228A86BF000CEAA13 /* SteeringControllers */ = {
