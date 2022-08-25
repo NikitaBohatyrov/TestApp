@@ -9,66 +9,13 @@ import Foundation
 
 final class MainViewModel{
     
-    // MARK: parsing JSON file to get devices
-    func parse(completion:@escaping ([Device])->()) {
-        let url = URL(string: "http://storage42.com/modulotest/data.json")
-        
-        URLSession.shared.dataTask(with: url!) { data, response, error in
-            if error != nil {
-                print(error?.localizedDescription  ?? "error in parsing results")
-                return
-            }
-            do{
-                let result = try JSONDecoder().decode(Root.self, from: data!)
-                completion(result.devices)
-            }catch {
-                print("error")
-            }
-        }.resume()
-    }
+    var sections:(([Section])->Void)?
     
-    // MARK: Sorting parsed devices according to their properties
-    func getDevices(completion:@escaping ([Section])->()){
-        var lights = [Light]()
-        var heaters = [Heater]()
-        var rollerShutters = [RollerShutter]()
-        
-        parse { devices in
-            for device in devices {
-                if let position = device.position{
-                    let rollerShutter = RollerShutter(id: device.id, name: device.deviceName, position: position)
-                    
-                    rollerShutters.append(rollerShutter)
-                    
-                }else if let temperature = device.temperature,
-                         let mode = device.mode{
-                    let heater = Heater(id: device.id, name: device.deviceName, temp: temperature, mode: mode)
-                    
-                    heaters.append(heater)
-                    
-                }else if let intensity = device.intensity,
-                         let mode = device.mode{
-                    let light = Light(id: device.id, name: device.deviceName, intensity: intensity, mode:mode)
-                    
-                    lights.append(light)
-                }
+    public func loadView(){
+        Parser().parse {[weak self] parsedResult in
+            DeviceManager().getDevices(devices: parsedResult) { [weak self] sortedDevices in
+                self?.sections?(sortedDevices)
             }
-            // assembling sections
-            let sections:[Section] = [
-                Section(title: "Lights", content: lights, isOpened: true),
-                Section(title: "Roller shutters", content: rollerShutters, isOpened: false),
-                Section(title: "Heaters", content: heaters, isOpened: false)
-            ]
-            // saving sections to userDefaults
-            if let LightData = try? PropertyListEncoder().encode(lights),
-               let rollerShuttersData = try? PropertyListEncoder().encode(rollerShutters),
-               let heatersData = try? PropertyListEncoder().encode(heaters){
-                UserDefaults.standard.set(LightData, forKey: "lights")
-                UserDefaults.standard.set(rollerShuttersData, forKey: "rollerShutters")
-                UserDefaults.standard.set(heatersData, forKey: "heaters")
-            }
-            
-            completion(sections)
         }
     }
     

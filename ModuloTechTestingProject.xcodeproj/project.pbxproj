@@ -24,6 +24,8 @@
 		2FC345AF28A4821800CEAA13 /* extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC345AE28A4821800CEAA13 /* extension.swift */; };
 		2FC345B128A86BDD00CEAA13 /* RollerShutterSteeringViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC345B028A86BDD00CEAA13 /* RollerShutterSteeringViewController.swift */; };
 		2FC345B428A86C1100CEAA13 /* HeaterSteeringViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC345B328A86C1100CEAA13 /* HeaterSteeringViewController.swift */; };
+		2FCF9BAE28B5591E00F0B7CA /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FCF9BAD28B5591E00F0B7CA /* Parser.swift */; };
+		2FCF9BB028B55A9800F0B7CA /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FCF9BAF28B55A9800F0B7CA /* DeviceManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +54,8 @@
 		2FC345AE28A4821800CEAA13 /* extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extension.swift; sourceTree = "<group>"; };
 		2FC345B028A86BDD00CEAA13 /* RollerShutterSteeringViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollerShutterSteeringViewController.swift; sourceTree = "<group>"; };
 		2FC345B328A86C1100CEAA13 /* HeaterSteeringViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaterSteeringViewController.swift; sourceTree = "<group>"; };
+		2FCF9BAD28B5591E00F0B7CA /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
+		2FCF9BAF28B55A9800F0B7CA /* DeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +88,7 @@
 		2F455A2A289C6AE200467A7C /* ModuloTechTestingProject */ = {
 			isa = PBXGroup;
 			children = (
+				2FCF9BAC28B5590C00F0B7CA /* Services */,
 				2FB3426728ABC2A00027FCF7 /* Localized */,
 				2F52313128A3C2EE004F3C69 /* MainCoordinator.swift */,
 				2F52312F28A3C1B1004F3C69 /* Coordinator.swift */,
@@ -170,6 +175,15 @@
 			path = SteeringControllers;
 			sourceTree = "<group>";
 		};
+		2FCF9BAC28B5590C00F0B7CA /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				2FCF9BAD28B5591E00F0B7CA /* Parser.swift */,
+				2FCF9BAF28B55A9800F0B7CA /* DeviceManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -250,6 +264,8 @@
 				2F455A5428A1C05200467A7C /* DevicesTableViewCell.swift in Sources */,
 				2F455A45289C6F5C00467A7C /* MainViewModel.swift in Sources */,
 				2F455A30289C6AE200467A7C /* MainViewController.swift in Sources */,
+				2FCF9BB028B55A9800F0B7CA /* DeviceManager.swift in Sources */,
+				2FCF9BAE28B5591E00F0B7CA /* Parser.swift in Sources */,
 				2F455A2C289C6AE200467A7C /* AppDelegate.swift in Sources */,
 				2FC345B428A86C1100CEAA13 /* HeaterSteeringViewController.swift in Sources */,
 				2FC345B128A86BDD00CEAA13 /* RollerShutterSteeringViewController.swift in Sources */,

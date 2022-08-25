@@ -34,25 +34,40 @@ class MainViewController: UIViewController, Coordinating {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        createView()
         if let value = updatedValue{
-            
+
             viewModel.updateSection(updatedData: value) {[weak self] updatedSections in
                 self?.sections = updatedSections
-                
+
                 DispatchQueue.main.async {[weak self] in
                     self?.tableView.reloadData()
                 }
             }
         }else{
-            viewModel.getDevices {[weak self] sections in
-                self?.sections = sections
-                DispatchQueue.main.async {[weak self] in
-                    self?.tableView.reloadData()
-                }
+            setUpViewModel()
+        }
+       
+        
+       
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.loadView()
+    }
+    
+    private func setUpViewModel(){
+        viewModel.sections = {[weak self] updatedSections in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            strongSelf.sections = updatedSections
+            DispatchQueue.main.async {
+                strongSelf.tableView.reloadData()
             }
         }
-        createView()
     }
 
     private func createView(){
