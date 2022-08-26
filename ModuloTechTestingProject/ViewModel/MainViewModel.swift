@@ -9,21 +9,75 @@ import Foundation
 
 final class MainViewModel{
     
-    var sections:(([Section])->Void)?
+    var reloadTableView:(()->Void)?
+    
+    var sections = [Section](){
+        didSet{
+            reloadTableView?()
+        }
+    }
+    
+    var lightViewModels = [LightCellViewModel](){
+        didSet{
+            reloadTableView?()
+        }
+    }
+    var rollerShutterViewModels = [RollerShutterCellViewModel](){
+        didSet{
+            reloadTableView?()
+        }
+    }
+    var heaterViewModels = [HeaterCellViewModel](){
+        didSet{
+            reloadTableView?()
+        }
+    }
     
     public func loadView(){
-        Parser().parse {[weak self] parsedResult in
+        Parser.parse {[weak self] parsedResult in
             DeviceManager().getDevices(devices: parsedResult) { [weak self] sortedDevices in
-                self?.sections?(sortedDevices)
+                self?.sections = sortedDevices
+                self?.fetchDevices(sections: sortedDevices)
             }
         }
+    }
+    
+    public func fetchDevices(sections:[Section]){
+        var tmpLight = [LightCellViewModel]()
+        var tmpHeater = [HeaterCellViewModel]()
+        var tmpRollerShutter = [RollerShutterCellViewModel]()
+        for section in sections {
+            for content in section.content{
+                if let data = content as? Light{
+                    tmpLight.append(LightCellViewModel(device: data))
+                }else if let data = content as? Heater{
+                    tmpHeater.append(HeaterCellViewModel(device: data))
+                }else if let data = content as? RollerShutter{
+                    tmpRollerShutter.append(RollerShutterCellViewModel(device: data))
+                }
+            }
+        }
+        lightViewModels = tmpLight
+        rollerShutterViewModels = tmpRollerShutter
+        heaterViewModels = tmpHeater
+    }
+    
+    func getLightCellViewModel(at indexPath:IndexPath)->LightCellViewModel{
+        return lightViewModels[indexPath.row-1]
+    }
+    
+    func getRollerShutterCellViewModel(at indexPath:IndexPath)->RollerShutterCellViewModel{
+        return rollerShutterViewModels[indexPath.row-1]
+    }
+    
+    func getHeaterCellViewModel(at indexPath:IndexPath)->HeaterCellViewModel{
+        return heaterViewModels[indexPath.row-1]
     }
     
     // MARK: Updates Sections with given updated data and saves it to userDefaults, and throws updated Sections
     public func updateSection(updatedData:Any,completion:@escaping ([Section])->()){
        
-       
-        getSectionsFromUserDefault { result in
+        UserDefaultsManager.get { result in
             switch result {
             case .success(var sections):
                 var sectionCounter = 0
@@ -102,27 +156,5 @@ final class MainViewModel{
                 print("occured error in getting sections from userDefaults:\(error)")
             }
         }
-        
-        
-    }
-    // MARK:  Retrieving old sections value from userDefaults in success case 
-    func getSectionsFromUserDefault(completion:@escaping (Result<[Section],Error>)->()){
-        let defaults = UserDefaults.standard
-        var sections = [Section]()
-        
-        if let lightsData = defaults.data(forKey: "lights"),
-           let rollerShuttersData = defaults.data(forKey: "rollerShutters"),
-           let heaterData = defaults.data(forKey: "heaters"){
-            let lights = try! PropertyListDecoder().decode([Light].self, from: lightsData)
-            let rollerShutters = try! PropertyListDecoder().decode([RollerShutter].self, from: rollerShuttersData)
-            let heaters = try! PropertyListDecoder().decode([Heater].self, from: heaterData)
-            
-            sections.append(Section(title: "Lights", content:lights, isOpened: false))
-            sections.append(Section(title: "Roller shutters", content: rollerShutters, isOpened: false))
-            sections.append(Section(title: "Heaters", content: heaters, isOpened: false))
-        
-            completion(.success(sections))
-        }
-      
     }
 }

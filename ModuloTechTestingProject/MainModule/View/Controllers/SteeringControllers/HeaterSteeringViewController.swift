@@ -11,7 +11,13 @@ class HeaterSteeringViewController: UIViewController, Coordinating {
     
     var coordinator: Coordinator?
     
-    var viewModel = SteeringViewModel()
+    var viewModel:HeaterCellViewModel?{
+        didSet{
+            device = viewModel?.device
+            mode = viewModel?.device.mode
+            temperature = viewModel?.device.temperature
+        }
+    }
     
     private var device:Heater!
     private var mode:Bool!
@@ -93,13 +99,11 @@ class HeaterSteeringViewController: UIViewController, Coordinating {
         return button
     }()
     
-    init(with model:Heater){
+    init(with model:HeaterCellViewModel){
         super.init(nibName: nil, bundle: nil)
-        device = model
-        mode = model.mode
-        temperature = model.temperature
+        device = model.device
         
-        if model.mode {
+        if  mode {
             powerButton.setTitle("Off".localized(), for: .normal)
             shadowElipse.backgroundColor = UIColor.systemYellow
             controlShadow(appear: true)
@@ -242,7 +246,7 @@ class HeaterSteeringViewController: UIViewController, Coordinating {
     }
     
     @objc func didTapDone(){
-        viewModel.saveAndSendHeaterObject(model: device!, updatedMode: mode, updatedValue: temperature) {[weak self] updatedHeater in
+        viewModel?.saveAndSendHeaterObject( updatedMode: mode, updatedValue: temperature) {[weak self] updatedHeater in
             self?.coordinator?.eventOccured(with: .backButtonTapped, data: updatedHeater)
         }
     }

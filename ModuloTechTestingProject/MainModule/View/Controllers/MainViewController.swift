@@ -13,8 +13,6 @@ class MainViewController: UIViewController, Coordinating {
     let viewModel = MainViewModel()
     
     var tableView = UITableView(frame: .zero, style: .insetGrouped)
-
-    var sections = [Section]()
     
     var updatedValue:Any?
     
@@ -35,18 +33,16 @@ class MainViewController: UIViewController, Coordinating {
     override func viewDidLoad() {
         super.viewDidLoad()
         createView()
-        if let value = updatedValue{
 
-            viewModel.updateSection(updatedData: value) {[weak self] updatedSections in
-                self?.sections = updatedSections
-
-                DispatchQueue.main.async {[weak self] in
-                    self?.tableView.reloadData()
-                }
-            }
-        }else{
+//            viewModel.updateSection(updatedData: value) {[weak self] updatedSections in
+//
+//                DispatchQueue.main.async {[weak self] in
+//                    self?.tableView.reloadData()
+//                }
+//            }
+//        }else{
             setUpViewModel()
-        }
+//        }
        
         
        
@@ -54,18 +50,14 @@ class MainViewController: UIViewController, Coordinating {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.loadView()
+       
     }
     
     private func setUpViewModel(){
-        viewModel.sections = {[weak self] updatedSections in
-            guard let strongSelf = self else {
-                return
-            }
-            
-            strongSelf.sections = updatedSections
+        viewModel.loadView()
+        viewModel.reloadTableView = {[weak self] in
             DispatchQueue.main.async {
-                strongSelf.tableView.reloadData()
+                self?.tableView.reloadData()
             }
         }
     }
@@ -85,11 +77,11 @@ class MainViewController: UIViewController, Coordinating {
 
 extension MainViewController:UITableViewDelegate,UITableViewDataSource{
     func numberOfSections(in tableView: UITableView) -> Int {
-      return sections.count
+        return viewModel.sections.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let section = sections[section]
+        let section = viewModel.sections[section]
         if section.isOpened{
             return section.content.count + 1
         }else {
@@ -103,10 +95,10 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource{
                                                      for: indexPath) as! SectionTitileTableViewCell
             cell.title.font = .systemFont(ofSize: tableView.frame.size.height/36)
             cell.title.textColor = UIColor(named: "LightGray")
-            cell.configure(with: sections[indexPath.section].title)
+            cell.configure(with: viewModel.sections[indexPath.section].title)
             return cell
         }else {
-            let model = sections[indexPath.section].content[indexPath.row-1]
+            let model = viewModel.sections[indexPath.section].content[indexPath.row-1]
 
             let cell = tableView.dequeueReusableCell(withIdentifier: DevicesTableViewCell.identifier,
                                                      for: indexPath) as! DevicesTableViewCell
@@ -121,10 +113,21 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.row == 0 {
-            sections[indexPath.section].isOpened = !sections[indexPath.section].isOpened
+            viewModel.sections[indexPath.section].isOpened = !viewModel.sections[indexPath.section].isOpened
             tableView.reloadSections([indexPath.section], with: .none)
         }else {
-            coordinator?.eventOccured(with: .cellTapped, data: sections[indexPath.section].content[indexPath.row-1])
+            if indexPath.section == 0 {
+               let cellViewModel = viewModel.getLightCellViewModel(at: indexPath)
+                coordinator?.eventOccured(with: .cellTapped, data: cellViewModel)
+            }else if indexPath.section == 1 {
+               let cellViewModel = viewModel.getRollerShutterCellViewModel(at: indexPath)
+                coordinator?.eventOccured(with: .cellTapped, data: cellViewModel)
+            }else {
+              let  cellViewModel = viewModel.getHeaterCellViewModel(at: indexPath)
+                coordinator?.eventOccured(with: .cellTapped, data: cellViewModel)
+            }
+            
+           
         }
     }
     

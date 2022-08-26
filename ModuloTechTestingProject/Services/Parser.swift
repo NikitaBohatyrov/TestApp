@@ -6,8 +6,13 @@
 //
 
 import Foundation
-final class Parser{
-    func parse(completion:@escaping ([Device])->()) {
+
+protocol ParsingProtocol {
+    static func parse(completion: @escaping (([Device]) -> ()))
+}
+
+final class Parser:ParsingProtocol{
+   static func parse(completion:@escaping ([Device])->()) {
         let url = URL(string: "http://storage42.com/modulotest/data.json")
         
         URLSession.shared.dataTask(with: url!) { data, response, error in

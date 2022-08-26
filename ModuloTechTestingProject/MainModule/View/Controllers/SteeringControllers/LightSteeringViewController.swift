@@ -11,11 +11,17 @@ class LightSteeringViewController: UIViewController, Coordinating {
     
     var coordinator: Coordinator?
     
-    var viewModel = SteeringViewModel()
+    var device:Light!
+    var mode:Bool!
+    var intensity:Int!
     
-    private var device:Light!
-    private var mode:Bool!
-    private var intensity:Int!
+    var viewModel:LightCellViewModel?{
+        didSet{
+            device = viewModel?.device
+            mode = viewModel?.device.mode
+            intensity = viewModel?.device.intensity
+        }
+    }
     
     private var imageView:UIImageView = {
         let imageView = UIImageView()
@@ -71,26 +77,26 @@ class LightSteeringViewController: UIViewController, Coordinating {
     
    private let rangeSlider = Slider(frame: .zero)
     
-    init(with model:Light){
+    init(with model:LightCellViewModel){
         super.init(nibName: nil, bundle: nil)
-            device = model
-            mode = model.mode
-            intensity = model.intensity
-            
-            if model.mode{
+        self.viewModel = model
+        device = model.device
+        mode = model.device.mode
+        intensity = model.device.intensity
+        if model.device.mode{
                 powerButton.setTitle("Off".localized(), for: .normal)
                 circle.backgroundColor = UIColor.systemYellow
-                rangeSlider.value = Float(intensity)/100
-                controlShadow(valueToChange: intensity)
+            rangeSlider.value = Float(model.device.intensity)/100
+            controlShadow(valueToChange: model.device.intensity)
                 imageView.image = UIImage(named: "DeviceLightOnIcon")!
-                intensityLabel.text = "\(intensity ?? 0)"
+            intensityLabel.text = "\(model.device.intensity)"
                 
             }else {
                 powerButton.setTitle("On".localized(), for: .normal)
                 circle.backgroundColor = UIColor(named: "LightGray")
                 imageView.image = UIImage(named: "DeviceLightOffIcon")!
-                rangeSlider.value = Float(intensity)/100
-                intensityLabel.text = "\(intensity ?? 0)"
+                rangeSlider.value = Float(model.device.intensity)/100
+                intensityLabel.text = "\(model.device.intensity)"
                 rangeSlider.isEnabled = false
             }
     }
@@ -162,7 +168,7 @@ class LightSteeringViewController: UIViewController, Coordinating {
     }
     
     @objc func didTapDone(){
-        viewModel.saveAndSendLightObject(model: device!, updatedMode: mode, updatedValue: intensity) {[weak self] updatedLight in
+        viewModel!.saveAndSendLightObject(updatedMode: mode, updatedValue: intensity) {[weak self] updatedLight in
             self?.coordinator?.eventOccured(with: .backButtonTapped, data: updatedLight)
         }
     }

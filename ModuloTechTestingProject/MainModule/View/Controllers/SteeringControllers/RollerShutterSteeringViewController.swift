@@ -11,8 +11,13 @@ class RollerShutterSteeringViewController: UIViewController, Coordinating {
     
     var coordinator: Coordinator?
     
-    var viewModel = SteeringViewModel()
-    
+    var viewModel:RollerShutterCellViewModel?{
+        didSet{
+            device = viewModel?.device
+            position = viewModel?.device.position
+        }
+    }
+
     private var device:RollerShutter!
     private var position:Int!
     
@@ -56,12 +61,12 @@ class RollerShutterSteeringViewController: UIViewController, Coordinating {
         return slider
     }()
     
-    init(with model:RollerShutter){
+    init(with model:RollerShutterCellViewModel){
         super.init(nibName: nil, bundle: nil)
-        self.device = model
-        self.position = model.position
+        self.viewModel = model
+        
         rangeSlider.value = Float(position)/100
-        switch model.position{
+        switch position{
         case 0:
             imageView.image = UIImage(named: "DeviceRollerShutterOpenedIcon")
             positionLabel.text = "Opened".localized()
@@ -70,7 +75,7 @@ class RollerShutterSteeringViewController: UIViewController, Coordinating {
             positionLabel.text = "Closed".localized()
         default:
             imageView.image = UIImage(named: "DeviceRollerShutterIcon")
-            positionLabel.text = "\(model.position)%"
+            positionLabel.text = "\(position ?? 0)%"
         }
     }
     
@@ -127,7 +132,7 @@ class RollerShutterSteeringViewController: UIViewController, Coordinating {
     }
     
     @objc func didTapDone(){
-        viewModel.saveAndSendRollerShutterObject(model: device!, updatedValue: position) {[weak self] updatedRollerShutter in
+        viewModel?.saveAndSendRollerShutterObject(updatedValue: position) {[weak self] updatedRollerShutter in
             self?.coordinator?.eventOccured(with: .backButtonTapped, data: updatedRollerShutter)
         }
     }

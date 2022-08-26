@@ -26,6 +26,10 @@
 		2FC345B428A86C1100CEAA13 /* HeaterSteeringViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC345B328A86C1100CEAA13 /* HeaterSteeringViewController.swift */; };
 		2FCF9BAE28B5591E00F0B7CA /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FCF9BAD28B5591E00F0B7CA /* Parser.swift */; };
 		2FCF9BB028B55A9800F0B7CA /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FCF9BAF28B55A9800F0B7CA /* DeviceManager.swift */; };
+		2FE4A92A28B80B7700C07612 /* LightVIewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE4A92928B80B7700C07612 /* LightVIewModel.swift */; };
+		2FE4A92C28B80B8600C07612 /* RollerShutterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE4A92B28B80B8600C07612 /* RollerShutterViewModel.swift */; };
+		2FE4A92E28B80B9200C07612 /* HeaterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE4A92D28B80B9200C07612 /* HeaterViewModel.swift */; };
+		2FE4A93028B8238800C07612 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE4A92F28B8238800C07612 /* UserDefaultsManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +60,10 @@
 		2FC345B328A86C1100CEAA13 /* HeaterSteeringViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaterSteeringViewController.swift; sourceTree = "<group>"; };
 		2FCF9BAD28B5591E00F0B7CA /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		2FCF9BAF28B55A9800F0B7CA /* DeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
+		2FE4A92928B80B7700C07612 /* LightVIewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightVIewModel.swift; sourceTree = "<group>"; };
+		2FE4A92B28B80B8600C07612 /* RollerShutterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollerShutterViewModel.swift; sourceTree = "<group>"; };
+		2FE4A92D28B80B9200C07612 /* HeaterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaterViewModel.swift; sourceTree = "<group>"; };
+		2FE4A92F28B8238800C07612 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +143,9 @@
 			children = (
 				2F455A44289C6F5C00467A7C /* MainViewModel.swift */,
 				2FC345AC28A43A6800CEAA13 /* SteeringVievModel.swift */,
+				2FE4A92928B80B7700C07612 /* LightVIewModel.swift */,
+				2FE4A92B28B80B8600C07612 /* RollerShutterViewModel.swift */,
+				2FE4A92D28B80B9200C07612 /* HeaterViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -180,6 +191,7 @@
 			children = (
 				2FCF9BAD28B5591E00F0B7CA /* Parser.swift */,
 				2FCF9BAF28B55A9800F0B7CA /* DeviceManager.swift */,
+				2FE4A92F28B8238800C07612 /* UserDefaultsManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -264,6 +276,8 @@
 				2F455A5428A1C05200467A7C /* DevicesTableViewCell.swift in Sources */,
 				2F455A45289C6F5C00467A7C /* MainViewModel.swift in Sources */,
 				2F455A30289C6AE200467A7C /* MainViewController.swift in Sources */,
+				2FE4A92C28B80B8600C07612 /* RollerShutterViewModel.swift in Sources */,
+				2FE4A92E28B80B9200C07612 /* HeaterViewModel.swift in Sources */,
 				2FCF9BB028B55A9800F0B7CA /* DeviceManager.swift in Sources */,
 				2FCF9BAE28B5591E00F0B7CA /* Parser.swift in Sources */,
 				2F455A2C289C6AE200467A7C /* AppDelegate.swift in Sources */,
@@ -275,8 +289,10 @@
 				2F52313428A3C730004F3C69 /* LightSteeringViewController.swift in Sources */,
 				2F455A2E289C6AE200467A7C /* SceneDelegate.swift in Sources */,
 				2F52313228A3C2EE004F3C69 /* MainCoordinator.swift in Sources */,
+				2FE4A93028B8238800C07612 /* UserDefaultsManager.swift in Sources */,
 				2F455A5D28A1CA8F00467A7C /* SectionTitileTableViewCell.swift in Sources */,
 				2FC345AD28A43A6800CEAA13 /* SteeringVievModel.swift in Sources */,
+				2FE4A92A28B80B7700C07612 /* LightVIewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

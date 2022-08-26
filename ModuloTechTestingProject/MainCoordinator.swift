@@ -16,17 +16,17 @@ class MainCoordinator:Coordinator{
         switch type {
         case .cellTapped:
             var vc:UIViewController & Coordinating
-            if let data = data as? Light{
+            if let data = data as? LightCellViewModel{
                 vc = LightSteeringViewController(with: data)
-                vc.title = data.name
+                vc.title = data.device.name
                 vc.coordinator = self
-            }else if let data = data as? RollerShutter{
+            }else if let data = data as? RollerShutterCellViewModel{
                 vc = RollerShutterSteeringViewController(with: data)
-                vc.title = data.name
+                vc.title = data.device.name
                 vc.coordinator = self
-            } else if let data = data as? Heater{
+            } else if let data = data as? HeaterCellViewModel{
                 vc = HeaterSteeringViewController(with: data)
-                vc.title = data.name
+                vc.title = data.device.name
                 vc.coordinator = self
             }else {
                 return

@@ -34,18 +34,12 @@ final class DeviceManager{
             }
             // assembling sections
             let sections:[Section] = [
-                Section(title: "Lights", content: lights, isOpened: true),
+                Section(title: "Lights", content: lights , isOpened: true),
                 Section(title: "Roller shutters", content: rollerShutters, isOpened: false),
                 Section(title: "Heaters", content: heaters, isOpened: false)
             ]
             // saving sections to userDefaults
-            if let LightData = try? PropertyListEncoder().encode(lights),
-               let rollerShuttersData = try? PropertyListEncoder().encode(rollerShutters),
-               let heatersData = try? PropertyListEncoder().encode(heaters){
-                UserDefaults.standard.set(LightData, forKey: "lights")
-                UserDefaults.standard.set(rollerShuttersData, forKey: "rollerShutters")
-                UserDefaults.standard.set(heatersData, forKey: "heaters")
-            }
+        UserDefaultsManager.save(lights, rollerShutters, heaters)
             
             completion(sections)
         }

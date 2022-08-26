@@ -28,6 +28,7 @@ enum ProductType: String, Codable {
     case heater = "Heater"
     case light = "Light"
     case rollerShutter = "RollerShutter"
+    
 }
 
 
@@ -99,5 +100,13 @@ struct Section{
     var content:[Any]
     var isOpened:Bool
     
+}
+
+
+
+enum DefineClass:Codable {
+    case heater(Heater)
+    case light(Light)
+    case rollerShutter(RollerShutter)
 }
 
