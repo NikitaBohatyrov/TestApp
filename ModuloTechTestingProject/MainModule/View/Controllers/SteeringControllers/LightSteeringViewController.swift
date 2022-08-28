@@ -15,13 +15,7 @@ class LightSteeringViewController: UIViewController, Coordinating {
     var mode:Bool!
     var intensity:Int!
     
-    var viewModel:LightCellViewModel?{
-        didSet{
-            device = viewModel?.device
-            mode = viewModel?.device.mode
-            intensity = viewModel?.device.intensity
-        }
-    }
+    var viewModel:LightCellViewModel?
     
     private var imageView:UIImageView = {
         let imageView = UIImageView()
@@ -75,50 +69,45 @@ class LightSteeringViewController: UIViewController, Coordinating {
         return button
     }()
     
-   private let rangeSlider = Slider(frame: .zero)
-    
-    init(with model:LightCellViewModel){
+    init(with viewModel:LightCellViewModel){
         super.init(nibName: nil, bundle: nil)
-        self.viewModel = model
-        device = model.device
-        mode = model.device.mode
-        intensity = model.device.intensity
-        if model.device.mode{
-                powerButton.setTitle("Off".localized(), for: .normal)
-                circle.backgroundColor = UIColor.systemYellow
-            rangeSlider.value = Float(model.device.intensity)/100
-            controlShadow(valueToChange: model.device.intensity)
-                imageView.image = UIImage(named: "DeviceLightOnIcon")!
-            intensityLabel.text = "\(model.device.intensity)"
-                
-            }else {
-                powerButton.setTitle("On".localized(), for: .normal)
-                circle.backgroundColor = UIColor(named: "LightGray")
-                imageView.image = UIImage(named: "DeviceLightOffIcon")!
-                rangeSlider.value = Float(model.device.intensity)/100
-                intensityLabel.text = "\(model.device.intensity)"
-                rangeSlider.isEnabled = false
+        self.viewModel = viewModel
+        self.device = viewModel.device
+        self.mode = viewModel.device.mode
+        self.intensity = viewModel.device.intensity
+        if mode{
+            powerButton.setTitle("Off".localized(), for: .normal)
+            circle.backgroundColor = UIColor.systemYellow
+            rangeSlider.value = Float(intensity)/100
+            viewModel.updateIntensityUI(rangeSlider.value) {[weak self] updatedIntensity,lampShadow, updatedOpacity in
+                self?.intensityLabel.text = "\(updatedIntensity ?? 0)"
+                self?.circle.layer.shadowRadius = CGFloat(lampShadow)
+                self?.circle.layer.shadowOpacity = updatedOpacity
             }
+            imageView.image = UIImage(named: "DeviceLightOnIcon")!
+          
+        }else {
+            powerButton.setTitle("On".localized(), for: .normal)
+            circle.backgroundColor = UIColor(named: "LightGray")
+            imageView.image = UIImage(named: "DeviceLightOffIcon")!
+            rangeSlider.value = Float(intensity)/100
+            intensityLabel.text = "\(intensity ?? 0)"
+            rangeSlider.isEnabled = false
+        }
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+   private let rangeSlider = Slider(frame: .zero)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.isNavigationBarHidden = false
-        view.backgroundColor = UIColor(red: 36/255, green: 36/255, blue: 68/255, alpha: 1)
         
-        controlPanelView.addSubview(intensityLabel)
-        controlPanelView.addSubview(rangeSlider)
-        controlPanelView.addSubview(powerButton)
-        view.addSubview(circle)
-        view.sendSubviewToBack(circle)
-        view.addSubview(controlPanelView)
-        view.addSubview(imageView)
-        
+        setUpView()
         setUpNavBar()
+        
         
         NSLayoutConstraint.activate([
             imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -147,11 +136,9 @@ class LightSteeringViewController: UIViewController, Coordinating {
             controlPanelView.widthAnchor.constraint(equalTo: view.widthAnchor)
         ])
         
-        rangeSlider.translatesAutoresizingMaskIntoConstraints = false
+       
         rangeSlider.addTarget(self, action: #selector(updateIntanseLabel), for: .valueChanged)
-        
         powerButton.addTarget(self, action: #selector(switchMode), for: .touchUpInside)
-        
         let swipeGestureRecognizerLeft = UISwipeGestureRecognizer(target: self, action: #selector(didTapDone))
         swipeGestureRecognizerLeft.direction = .right
         view.addGestureRecognizer(swipeGestureRecognizerLeft)
@@ -167,17 +154,32 @@ class LightSteeringViewController: UIViewController, Coordinating {
         navigationItem.title = device.name.localized()
     }
     
+    private func setUpView(){
+        navigationController?.isNavigationBarHidden = false
+        view.backgroundColor = UIColor(red: 36/255, green: 36/255, blue: 68/255, alpha: 1)
+        rangeSlider.translatesAutoresizingMaskIntoConstraints = false
+        controlPanelView.addSubview(intensityLabel)
+        controlPanelView.addSubview(rangeSlider)
+        controlPanelView.addSubview(powerButton)
+        view.addSubview(circle)
+        view.sendSubviewToBack(circle)
+        view.addSubview(controlPanelView)
+        view.addSubview(imageView)
+    }
+    
     @objc func didTapDone(){
-        viewModel!.saveAndSendLightObject(updatedMode: mode, updatedValue: intensity) {[weak self] updatedLight in
-            self?.coordinator?.eventOccured(with: .backButtonTapped, data: updatedLight)
-        }
+        viewModel?.saveAndSendLightObject(updatedMode: mode, updatedValue: intensity, completion: {[weak self] device in
+            UserDefaultsManager.manageLights(device: device)
+            self?.coordinator?.backScroll()
+        })
     }
     
     @objc func switchMode(){
         if mode {
             powerButton.setTitle("On".localized(), for: .normal)
             mode = !mode
-            controlShadow(valueToChange: 0)
+            circle.layer.shadowOpacity = 0
+            circle.layer.shadowRadius = 0
             rangeSlider.isEnabled = false
             circle.backgroundColor = UIColor(named: "Gray")
             imageView.image = UIImage(named: "DeviceLightOffIcon")!
@@ -192,15 +194,13 @@ class LightSteeringViewController: UIViewController, Coordinating {
     }
     
     @objc private func updateIntanseLabel(){
-        let valueToChange = Int(rangeSlider.value*100)
-        self.intensity = valueToChange
-        controlShadow(valueToChange: valueToChange)
-        self.intensityLabel.text = "\(valueToChange)"
+        viewModel?.updateIntensityUI(rangeSlider.value, completion: {[weak self] updatedIntensity, lampShadow, updatedShadowOpacity in
+            self?.intensity = updatedIntensity
+            self?.intensityLabel.text = "\(updatedIntensity ?? 0)"
+            self?.circle.layer.shadowOpacity = updatedShadowOpacity
+            self?.circle.layer.shadowRadius = CGFloat(lampShadow)
+        })
     }
     
-    func controlShadow(valueToChange:Int){
-        let lampShadow = CGFloat(valueToChange/3)
-        circle.layer.shadowRadius = lampShadow
-        circle.layer.shadowOpacity = rangeSlider.value*10
-    }
+    
 }

@@ -14,43 +14,10 @@ class MainViewController: UIViewController, Coordinating {
     
     var tableView = UITableView(frame: .zero, style: .insetGrouped)
     
-    var updatedValue:Any?
-    
-    init(with data:Any,start:Bool = false){
-        super.init(nibName: nil, bundle: nil)
-        self.updatedValue = data
-    }
-    
-    init(){
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         createView()
-
-//            viewModel.updateSection(updatedData: value) {[weak self] updatedSections in
-//
-//                DispatchQueue.main.async {[weak self] in
-//                    self?.tableView.reloadData()
-//                }
-//            }
-//        }else{
-            setUpViewModel()
-//        }
-       
-        
-       
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-       
+        setUpViewModel()
     }
     
     private func setUpViewModel(){

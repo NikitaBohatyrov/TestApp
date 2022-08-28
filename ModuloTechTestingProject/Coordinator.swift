@@ -16,6 +16,7 @@ protocol Coordinator{
     var navigationController: UINavigationController? {get set}
     
     func eventOccured(with type: Event,data:Any)
+    func backScroll()
     func start()
 }
 

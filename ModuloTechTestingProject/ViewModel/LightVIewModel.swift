@@ -9,6 +9,15 @@ import Foundation
 struct LightCellViewModel{
     var device:Light
     
+    public func updateIntensityUI(_ value:Float,completion:@escaping (Int?,Float,Float)->()){
+        var intensity:Int!
+        let valueToChange = Int(value*100)
+        let lampShadow = Float(valueToChange/3)
+        let shadowOpacity = value*10
+        intensity = valueToChange
+        completion(intensity,lampShadow,shadowOpacity)
+    }
+    
     
     public func saveAndSendLightObject(updatedMode:Bool,updatedValue:Int,completion:@escaping (Light)->()){
         let mode:String

@@ -21,4 +21,20 @@ struct HeaterCellViewModel{
             let newHeaterObkect = Heater(id: device.id, name: device.name, temp: updatedValue, mode: mode)
             completion(newHeaterObkect)
     }
+    
+    public func increaseTemperature(_ temperature:Double, completion:@escaping (Double)->()){
+        var updatedTemp = temperature
+        if  updatedTemp < 28 {
+            updatedTemp += 0.5
+           completion(updatedTemp)
+        }
+    }
+    
+    public func decreaseTemperature(_ temperature:Double, completion:@escaping (Double)->()){
+        var updatedTemp = temperature
+        if updatedTemp > 7 {
+            updatedTemp -= 0.5
+           completion(updatedTemp)
+        }
+    }
 }

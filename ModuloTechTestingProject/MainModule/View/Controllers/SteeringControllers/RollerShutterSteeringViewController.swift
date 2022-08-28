@@ -11,13 +11,8 @@ class RollerShutterSteeringViewController: UIViewController, Coordinating {
     
     var coordinator: Coordinator?
     
-    var viewModel:RollerShutterCellViewModel?{
-        didSet{
-            device = viewModel?.device
-            position = viewModel?.device.position
-        }
-    }
-
+    var viewModel:RollerShutterCellViewModel?
+    
     private var device:RollerShutter!
     private var position:Int!
     
@@ -42,7 +37,6 @@ class RollerShutterSteeringViewController: UIViewController, Coordinating {
     
     private let positionLabel:UILabel = {
         let label = UILabel()
-        label.text = "0"
         label.textColor = UIColor(named: "LightGray")
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 40)
@@ -64,19 +58,17 @@ class RollerShutterSteeringViewController: UIViewController, Coordinating {
     init(with model:RollerShutterCellViewModel){
         super.init(nibName: nil, bundle: nil)
         self.viewModel = model
-        
-        rangeSlider.value = Float(position)/100
-        switch position{
-        case 0:
-            imageView.image = UIImage(named: "DeviceRollerShutterOpenedIcon")
-            positionLabel.text = "Opened".localized()
-        case 100:
-            imageView.image = UIImage(named: "DeviceRollerShutterClosedIcon")
-            positionLabel.text = "Closed".localized()
-        default:
-            imageView.image = UIImage(named: "DeviceRollerShutterIcon")
-            positionLabel.text = "\(position ?? 0)%"
-        }
+        self.device = model.device
+        self.position = model.device.position
+        rangeSlider.value = Float(model.device.position)/100
+        model.updatePositionUI(rangeSlider.value, completion: {[weak self] updatedPosition, shutterImage, positionStr, _ in
+            self?.imageView.image = shutterImage
+            if positionStr != ""{
+                self?.positionLabel.text = positionStr
+            }else {
+                self?.positionLabel.text = "\(updatedPosition)%"
+            }
+        })
     }
     
     required init?(coder: NSCoder) {
@@ -85,14 +77,11 @@ class RollerShutterSteeringViewController: UIViewController, Coordinating {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        navigationController?.isNavigationBarHidden = false
-        updateBackGroundView()
-        controlPanelView.addSubview(positionLabel)
-        controlPanelView.addSubview(rangeSlider)
-        view.addSubview(controlPanelView)
-        view.addSubview(imageView)
-        
+        viewModel?.updatePositionUI(rangeSlider.value, completion: {[weak self] updatedPosition, shutterImage, positionStr, backgroungColor in
+            self?.view.backgroundColor = backgroungColor
+        })
+       
+        setUpView()
         setUpNavBar()
         
         NSLayoutConstraint.activate([
@@ -122,6 +111,13 @@ class RollerShutterSteeringViewController: UIViewController, Coordinating {
         
     }
     
+    private func setUpView(){
+        controlPanelView.addSubview(positionLabel)
+        controlPanelView.addSubview(rangeSlider)
+        view.addSubview(controlPanelView)
+        view.addSubview(imageView)
+    }
+    
     private func setUpNavBar(){
         let nav = self.navigationController?.navigationBar
         nav?.tintColor = UIColor(named: "LightGray")
@@ -129,39 +125,29 @@ class RollerShutterSteeringViewController: UIViewController, Coordinating {
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapDone))
         navigationItem.leftBarButtonItem = doneButton
         navigationItem.title = device.name.localized()
+        navigationController?.isNavigationBarHidden = false
     }
     
     @objc func didTapDone(){
-        viewModel?.saveAndSendRollerShutterObject(updatedValue: position) {[weak self] updatedRollerShutter in
-            self?.coordinator?.eventOccured(with: .backButtonTapped, data: updatedRollerShutter)
+        viewModel?.saveAndSendRollerShutterObject(updatedValue: position) {[weak self] device in
+            UserDefaultsManager.manageRollerShutters(device: device)
+            self?.coordinator?.backScroll()
         }
     }
     
     @objc private func updatePositionLabel(){
-        let valueToChange = Int(rangeSlider.value*100)
-        
-        self.position = valueToChange
-        self.positionLabel.text = "\(valueToChange)"
-        
-        updateBackGroundView()
-        
-        switch self.position{
-        case 0:
-            imageView.image = UIImage(named: "DeviceRollerShutterOpenedIcon")
-            positionLabel.text = "Opened".localized()
-        case 100:
-            imageView.image = UIImage(named: "DeviceRollerShutterClosedIcon")
-            positionLabel.text = "Closed".localized()
-        default:
-            imageView.image = UIImage(named: "DeviceRollerShutterIcon")
-        }
+        viewModel?.updatePositionUI(rangeSlider.value, completion: {[weak self] updatedPosition, shutterImage, positionStr, backgroungColor in
+            self?.position = updatedPosition
+            self?.imageView.image = shutterImage
+            if positionStr != ""{
+                self?.positionLabel.text = positionStr
+            }else {
+                self?.positionLabel.text = "\(updatedPosition)%"
+            }
+           
+            self?.view.backgroundColor = backgroungColor
+        })
     }
     
-    private func updateBackGroundView(){
-        let greenValue = CGFloat(86 - Int(rangeSlider.value*50))
-        let blueValue = CGFloat(118 - Int(rangeSlider.value*50))
-        self.view.backgroundColor = UIColor(red: 36/255,
-                                            green: greenValue/255,
-                                            blue: blueValue/255, alpha: 1)
-    }
+   
 }

@@ -39,7 +39,7 @@ final class DeviceManager{
                 Section(title: "Heaters", content: heaters, isOpened: false)
             ]
             // saving sections to userDefaults
-        UserDefaultsManager.save(lights, rollerShutters, heaters)
+        UserDefaultsManager.saveAll(lights, rollerShutters, heaters)
             
             completion(sections)
         }

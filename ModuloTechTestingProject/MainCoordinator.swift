@@ -16,9 +16,9 @@ class MainCoordinator:Coordinator{
         switch type {
         case .cellTapped:
             var vc:UIViewController & Coordinating
-            if let data = data as? LightCellViewModel{
-                vc = LightSteeringViewController(with: data)
-                vc.title = data.device.name
+            if let viewModel = data as? LightCellViewModel{
+                vc = LightSteeringViewController(with: viewModel)
+                vc.title = viewModel.device.name
                 vc.coordinator = self
             }else if let data = data as? RollerShutterCellViewModel{
                 vc = RollerShutterSteeringViewController(with: data)
@@ -39,25 +39,21 @@ class MainCoordinator:Coordinator{
             navigationController?.view.window!.layer.add(transition, forKey: kCATransition)
             navigationController?.pushViewController(vc, animated: false)
         case .backButtonTapped:
-            var vc:UIViewController & Coordinating
-            if let data = data as? Light{
-              vc = MainViewController(with: data)
-            }else if let data = data as? RollerShutter{
-                vc = MainViewController(with: data)
-            }else if let data = data as? Heater{
-                vc = MainViewController(with: data)
-            }else {
-                return
-            }
-            vc.coordinator = self
-                let transition = CATransition()
-                transition.duration = 0.4
-                transition.type = CATransitionType.reveal
-                transition.subtype = CATransitionSubtype.fromLeft
-                transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeInEaseOut)
-                navigationController?.view.window!.layer.add(transition, forKey: kCATransition)
-                navigationController?.pushViewController(vc, animated: false)
+           return
         }
+    }
+    
+    func backScroll() {
+        var vc:UIViewController & Coordinating = MainViewController()
+        vc.coordinator = self
+        
+        let transition = CATransition()
+        transition.duration = 0.4
+        transition.type = CATransitionType.reveal
+        transition.subtype = CATransitionSubtype.fromLeft
+        transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeInEaseOut)
+        navigationController?.view.window!.layer.add(transition, forKey: kCATransition)
+        navigationController?.pushViewController(vc, animated: false)
     }
         
     init(navigationController:UINavigationController){

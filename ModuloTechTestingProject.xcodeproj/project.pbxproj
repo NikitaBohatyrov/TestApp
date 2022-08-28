@@ -20,7 +20,6 @@
 		2F52313428A3C730004F3C69 /* LightSteeringViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F52313328A3C730004F3C69 /* LightSteeringViewController.swift */; };
 		2F52313628A3CE28004F3C69 /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F52313528A3CE28004F3C69 /* RangeSlider.swift */; };
 		2F8FCEB728AAF32200EC6476 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2F8FCEB928AAF32200EC6476 /* Localizable.strings */; };
-		2FC345AD28A43A6800CEAA13 /* SteeringVievModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC345AC28A43A6800CEAA13 /* SteeringVievModel.swift */; };
 		2FC345AF28A4821800CEAA13 /* extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC345AE28A4821800CEAA13 /* extension.swift */; };
 		2FC345B128A86BDD00CEAA13 /* RollerShutterSteeringViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC345B028A86BDD00CEAA13 /* RollerShutterSteeringViewController.swift */; };
 		2FC345B428A86C1100CEAA13 /* HeaterSteeringViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC345B328A86C1100CEAA13 /* HeaterSteeringViewController.swift */; };
@@ -54,7 +53,6 @@
 		2F8FCEBD28AAF32B00EC6476 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2F8FCEBE28AAF32C00EC6476 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2F8FCEBF28AAF32C00EC6476 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
-		2FC345AC28A43A6800CEAA13 /* SteeringVievModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SteeringVievModel.swift; sourceTree = "<group>"; };
 		2FC345AE28A4821800CEAA13 /* extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extension.swift; sourceTree = "<group>"; };
 		2FC345B028A86BDD00CEAA13 /* RollerShutterSteeringViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollerShutterSteeringViewController.swift; sourceTree = "<group>"; };
 		2FC345B328A86C1100CEAA13 /* HeaterSteeringViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaterSteeringViewController.swift; sourceTree = "<group>"; };
@@ -142,7 +140,6 @@
 			isa = PBXGroup;
 			children = (
 				2F455A44289C6F5C00467A7C /* MainViewModel.swift */,
-				2FC345AC28A43A6800CEAA13 /* SteeringVievModel.swift */,
 				2FE4A92928B80B7700C07612 /* LightVIewModel.swift */,
 				2FE4A92B28B80B8600C07612 /* RollerShutterViewModel.swift */,
 				2FE4A92D28B80B9200C07612 /* HeaterViewModel.swift */,
@@ -291,7 +288,6 @@
 				2F52313228A3C2EE004F3C69 /* MainCoordinator.swift in Sources */,
 				2FE4A93028B8238800C07612 /* UserDefaultsManager.swift in Sources */,
 				2F455A5D28A1CA8F00467A7C /* SectionTitileTableViewCell.swift in Sources */,
-				2FC345AD28A43A6800CEAA13 /* SteeringVievModel.swift in Sources */,
 				2FE4A92A28B80B7700C07612 /* LightVIewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

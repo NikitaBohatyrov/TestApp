@@ -11,13 +11,7 @@ class HeaterSteeringViewController: UIViewController, Coordinating {
     
     var coordinator: Coordinator?
     
-    var viewModel:HeaterCellViewModel?{
-        didSet{
-            device = viewModel?.device
-            mode = viewModel?.device.mode
-            temperature = viewModel?.device.temperature
-        }
-    }
+    var viewModel:HeaterCellViewModel?
     
     private var device:Heater!
     private var mode:Bool!
@@ -101,14 +95,16 @@ class HeaterSteeringViewController: UIViewController, Coordinating {
     
     init(with model:HeaterCellViewModel){
         super.init(nibName: nil, bundle: nil)
-        device = model.device
-        
-        if  mode {
+        self.viewModel = model
+        self.device = model.device
+        self.mode = model.device.mode
+        self.temperature = model.device.temperature
+        if  model.device.mode {
             powerButton.setTitle("Off".localized(), for: .normal)
             shadowElipse.backgroundColor = UIColor.systemYellow
             controlShadow(appear: true)
             imageView.image = UIImage(named: "DeviceHeaterOnIcon")!
-            temperatureLabel.text = "\(temperature ?? 0)℃"
+            temperatureLabel.text = "\(model.device.temperature)℃"
             
         }else {
             powerButton.setTitle("On".localized(), for: .normal)
@@ -118,7 +114,7 @@ class HeaterSteeringViewController: UIViewController, Coordinating {
             minusButton.isEnabled = false
             shadowElipse.backgroundColor = UIColor(named: "LightGray")
             imageView.image = UIImage(named: "DeviceHeaterOffIcon")!
-            temperatureLabel.text = "\(temperature ?? 0)℃"
+            temperatureLabel.text = "\(model.device.temperature)℃"
         }
     }
     
@@ -128,19 +124,8 @@ class HeaterSteeringViewController: UIViewController, Coordinating {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        navigationController?.isNavigationBarHidden = false
-        view.backgroundColor = UIColor(red: 36/255, green: 36/255, blue: 68/255, alpha: 1)
-        
-        controlPanelView.addSubview(temperatureLabel)
-        controlPanelView.addSubview(powerButton)
-        controlPanelView.addSubview(minusButton)
-        controlPanelView.addSubview(plusButton)
-        view.addSubview(shadowElipse)
-        view.sendSubviewToBack(shadowElipse)
-        view.addSubview(controlPanelView)
-        view.addSubview(imageView)
-        
+
+        setUpView()
         setUpNavBar()
         
         NSLayoutConstraint.activate([
@@ -183,6 +168,20 @@ class HeaterSteeringViewController: UIViewController, Coordinating {
         let swipeGestureRecognizerLeft = UISwipeGestureRecognizer(target: self, action: #selector(didTapDone))
         swipeGestureRecognizerLeft.direction = .right
         view.addGestureRecognizer(swipeGestureRecognizerLeft)
+    }
+    
+    private func setUpView(){
+        navigationController?.isNavigationBarHidden = false
+        view.backgroundColor = UIColor(red: 36/255, green: 36/255, blue: 68/255, alpha: 1)
+        
+        controlPanelView.addSubview(temperatureLabel)
+        controlPanelView.addSubview(powerButton)
+        controlPanelView.addSubview(minusButton)
+        controlPanelView.addSubview(plusButton)
+        view.addSubview(shadowElipse)
+        view.sendSubviewToBack(shadowElipse)
+        view.addSubview(controlPanelView)
+        view.addSubview(imageView)
     }
     
     private func setUpNavBar(){
@@ -228,26 +227,27 @@ class HeaterSteeringViewController: UIViewController, Coordinating {
     }
     
     @objc func increaseTemperature(){
-        if temperature < 28 {
-            temperature += 0.5
-            temperatureLabel.text = "\(temperature ?? 0.0)℃"
-            shadowElipse.layer.shadowColor = UIColor.systemRed.cgColor
-            controlShadow(appear: true)
-        }
+        viewModel?.increaseTemperature(temperature, completion: {[weak self] updatedTemp in
+            self?.temperature = updatedTemp
+            self?.temperatureLabel.text = "\(updatedTemp)℃"
+            self?.shadowElipse.layer.shadowColor = UIColor.systemRed.cgColor
+            self?.controlShadow(appear: true)
+        })
     }
     
     @objc func decreaseTemperature(){
-        if temperature > 7.0 {
-            temperature -= 0.5
-            temperatureLabel.text = "\(temperature ?? 0.0)℃"
-            shadowElipse.layer.shadowColor = UIColor.link.cgColor
-            controlShadow(appear: true)
-        }
+        viewModel?.decreaseTemperature(temperature, completion: {[weak self] updatedTemp in
+            self?.temperature = updatedTemp
+            self?.temperatureLabel.text = "\(updatedTemp)℃"
+            self?.shadowElipse.layer.shadowColor = UIColor.link.cgColor
+            self?.controlShadow(appear: true)
+        })
     }
     
     @objc func didTapDone(){
-        viewModel?.saveAndSendHeaterObject( updatedMode: mode, updatedValue: temperature) {[weak self] updatedHeater in
-            self?.coordinator?.eventOccured(with: .backButtonTapped, data: updatedHeater)
+        viewModel?.saveAndSendHeaterObject( updatedMode: mode, updatedValue: temperature) {[weak self] device in
+            UserDefaultsManager.manageHeaters(device: device)
+            self?.coordinator?.backScroll()
         }
     }
     
